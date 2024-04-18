@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const dbConnection = require("./utils/database");
 const userRoute = require("./routes/userRoute");
+const diseasePredict = require("./routes/diseasePredict");
 const cookieParser = require("cookie-parser");
 const cors = require('cors');
 
@@ -23,6 +24,7 @@ app.use(cors(corsOptions));
 
 //api
 app.use("/user", userRoute); //http://localhost:8000/user/register or /login
+app.use("/predict", diseasePredict); //http://localhost:8000/predict/predictDisease
 
 app.listen(process.env.PORT, () => {
     console.log("Server listing to the port, ", process.env.PORT);
