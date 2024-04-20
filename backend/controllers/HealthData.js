@@ -1,4 +1,5 @@
 const HealthData = require("../models/healthData");
+const axios = require('axios');
 
 const addHealthData = async (req, res) => {
   try {
@@ -20,6 +21,17 @@ const addHealthData = async (req, res) => {
         success: false,
       });
     }
+    const apiResponse = await axios.post('http://localhost:5000/api/predict', {
+      gender,
+      age,
+      bodyTemp,
+      pulseRate,
+      respirationRate,
+      bloodPressure,
+      bloodOxygenLevel,
+      weight,
+      bloodGlucoseLevel
+    });
     const newData = {
       gender: gender,
       age: age,
@@ -31,7 +43,7 @@ const addHealthData = async (req, res) => {
       weight: weight,
       bloodGlucoseLevel: bloodGlucoseLevel,
       date: new Date(),
-      result: 'temp'  // make an API call to flask
+      result: apiResponse.data.response  // make an API call to flask
     };
 
     const healthData = await HealthData.findOne({ userEmail: userEmail });
