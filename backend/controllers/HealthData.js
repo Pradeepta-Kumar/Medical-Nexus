@@ -1,6 +1,6 @@
 const HealthData = require("../models/healthData");
 
-const healthData = async (req, res) => {
+const addHealthData = async (req, res) => {
   try {
     const {
       gender,
@@ -55,4 +55,20 @@ const healthData = async (req, res) => {
     console.log(e);
   }
 };
-module.exports = healthData;
+
+const getHealthData = async (req, res) => {
+  const userEmail = req.body.userEmail;
+  try {
+      const healthData = await HealthData.findOne({ userEmail: userEmail });
+
+      if (!healthData) {
+          return res.status(404).json({ message: "Health data not found for the user" });
+      }
+
+      res.status(200).json(healthData.data);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { addHealthData, getHealthData };
