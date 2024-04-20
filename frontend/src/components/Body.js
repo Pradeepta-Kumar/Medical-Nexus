@@ -6,6 +6,7 @@ import Login from "./Login";
 import UserDetails from "./UserDetails";
 import AboutUs from "./AboutUs";
 import Details from "./Details";
+import History from "./History";
 
 export default function Body() {
   const appRouter = createBrowserRouter([
@@ -15,6 +16,7 @@ export default function Body() {
     { path: "/userdetails", element: <UserDetails /> },
     { path: "/aboutus", element: <AboutUs /> },
     { path: "/details", element: <Details /> },
+    { path: "/history", element: <History /> },
   ]);
 
   return (
