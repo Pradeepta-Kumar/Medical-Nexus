@@ -18,6 +18,8 @@ app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
     origin: "http://localhost:3000",
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }
 app.use(cors(corsOptions));
@@ -29,3 +31,4 @@ app.use("/predict", diseasePredict); //http://localhost:8000/predict/predictDise
 app.listen(process.env.PORT, () => {
     console.log("Server listing to the port, ", process.env.PORT);
 });
+

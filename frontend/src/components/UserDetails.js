@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import axios from "axios";
-import { API_END_POINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { API_END_POINT } from "../utils/constants";
 
 export default function UserDetails() {
   const [gender, setGender] = useState();
@@ -33,7 +33,8 @@ export default function UserDetails() {
     );
 
     const healthData = {
-      gender, age,
+      gender,
+      age,
       bodyTemp,
       pulseRate,
       respirationRate,
@@ -44,20 +45,28 @@ export default function UserDetails() {
     };
     try {
       const response = await axios.post(
-        `${API_END_POINT}/healthdata`,
+        // `http://localhost:8000/predict/predictDisease`,
+       `${API_END_POINT}/healthData`,
         healthData,
         {
+          withCredentials: true, // Include if you're dealing with cookies
           headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
+              'Content-Type': 'application/json'
+          }
         }
       );
-      console.log(response);
+      console.log(response.request.responseText);
       if (response.data.success) {
+        // const res = await axios.post(`${API_END_POINT}/healthData`, healthData, {
+        //   withCredentials: true, // Include if you're dealing with cookies
+        //   headers: {
+        //       'Content-Type': 'application/json'
+        //   }
+        // });
+        // console.log(res);
         toast.success(response.data.message);
       }
-      navigate("/login");
+      navigate("/details");
     } catch (e) {
       toast.error(e.response.data.message);
       console.log(e);
@@ -78,7 +87,7 @@ export default function UserDetails() {
     <div>
       <Header />
       <main>
-        <div className="w-[100vw] h-[100vh] mb-8">
+        <div className="w-[100vw] h-[120vh] mb-8">
           <h3 className="text-center mt-4 text-3xl font-bold">
             Enter your details
           </h3>
@@ -171,9 +180,10 @@ export default function UserDetails() {
               Submit
             </button>
           </form>
-        </div>
+        </div>     
       </main>
-      <Footer />
+
+      <Footer/>
     </div>
   );
 }

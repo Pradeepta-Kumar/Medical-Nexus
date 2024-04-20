@@ -1,4 +1,18 @@
 const axios = require('axios');
+const cors = require('cors');
+const express = require("express");
+
+const app = express();
+//middlewares
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+const corsOptions = {
+    origin: "http://localhost:3000",
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}
+app.use(cors(corsOptions));
 
 const predictDisease = async (req, res) => {
   try {
@@ -16,6 +30,7 @@ const predictDisease = async (req, res) => {
     }
     */
     // Replace with your actual API endpoint URL
+
     const apiUrl = 'http://localhost:5000/api/predict';
     
     const body = {
@@ -30,6 +45,7 @@ const predictDisease = async (req, res) => {
       bloodGlucoseLevel: req.body.bloodGlucoseLevel
     };
     const response = await axios.post(apiUrl, body, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
       }

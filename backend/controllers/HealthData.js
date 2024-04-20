@@ -11,7 +11,7 @@ const healthData = async (req, res) => {
       bloodPressure,
       bloodOxygenLevel,
       weight,
-      bloodGlucoseLevel
+      bloodGlucoseLevel,
     } = req.body;
     if (
       !gender ||
@@ -31,7 +31,7 @@ const healthData = async (req, res) => {
     }
 
     await HealthData.create({
-      gender, 
+      gender,
       age,
       bodyTemp,
       pulseRate,
@@ -39,7 +39,7 @@ const healthData = async (req, res) => {
       bloodPressure,
       bloodOxygenLevel,
       weight,
-      bloodGlucoseLevel
+      bloodGlucoseLevel,
     });
     return res.status(200).json({
       message: "Data added successfully!",

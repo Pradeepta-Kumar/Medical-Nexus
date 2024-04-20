@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="absolute mb-0 w-[100vw] bg-blue-500">
+    <div className="flex flex-col absolute mb-0 w-[100vw] bg-blue-500 justify-end">
       <div className="text-white text-lg font-semibold text-center py-2">
         Made with &#x2764;
       </div>

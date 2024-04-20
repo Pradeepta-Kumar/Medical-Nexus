@@ -1,0 +1,4 @@
+Flask==3.0.3
+ipython==8.12.3
+protobuf==5.26.1
+python-dotenv==1.0.1

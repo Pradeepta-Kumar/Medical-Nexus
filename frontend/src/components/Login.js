@@ -29,7 +29,7 @@ export default function Login() {
           },
           withCredentials: true,
         });
-        console.log(response);
+        console.log(response.data);
         if (response.data.success) {
           toast.success(response.data.message);
         }
