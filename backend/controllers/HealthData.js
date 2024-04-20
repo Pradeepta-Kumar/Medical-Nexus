@@ -42,7 +42,7 @@ const addHealthData = async (req, res) => {
       bloodOxygenLevel: bloodOxygenLevel,
       weight: weight,
       bloodGlucoseLevel: bloodGlucoseLevel,
-      date: new Date(),
+      date: new Date().toLocaleString(),
       result: apiResponse.data.response  // make an API call to flask
     };
 
@@ -70,6 +70,7 @@ const addHealthData = async (req, res) => {
 
 const getHealthData = async (req, res) => {
   const userEmail = req.body.userEmail;
+  console.log(userEmail)
   try {
       const healthData = await HealthData.findOne({ userEmail: userEmail });
 
@@ -77,7 +78,7 @@ const getHealthData = async (req, res) => {
           return res.status(404).json({ message: "Health data not found for the user" });
       }
 
-      res.status(200).json(healthData.data);
+      res.status(200).json({"data": healthData.data, "success": true});
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
