@@ -60,16 +60,6 @@ def predict():
   if request.method == 'POST' and request.is_json:
     data = request.get_json()
     if len(data) == 9:
-      gender = data['gender']
-      age = data['age']
-      bodyTemp = data['bodyTemp']
-      pulseRate = data['pulseRate']
-      respirationRate = data['respirationRate']
-      bloodPressure = data['bloodPressure']
-      bloodOxygenLevel = data['bloodOxygenLevel']
-      weight = data['weight']
-      bloodGlucoseLevel = data['bloodGlucoseLevel']
-      
       retries = 1
       while True:
         temp = prompt.format(*[i for i in data.values()]) # Generated Prompt 
@@ -85,6 +75,33 @@ def predict():
 
       return jsonify({
         "prompt": temp,
+        "response": response.text
+      })
+    else:
+      return jsonify({'error': 'Missing required data in request body'}), 400
+  else:
+    return jsonify({'error': 'Invalid request method. Use POST'}), 405
+
+@app.route('/api/hospital/', methods=['POST'])
+def hospitals():
+  if request.method == 'POST' and request.is_json:
+    data = request.get_json()
+    if len(data) == 1:
+      retries = 1
+      prompt = f"Nearby hospitals at {data['location']}"
+      while True:
+        response = model.generate_content(prompt)
+        try:
+          if "sorry" not in response.text.lower().split() and "not" not in response.text.lower().split():
+            print("GEMINI WORKED")
+            break
+        except json.JSONDecodeError:
+          print(retries)
+          retries += 1
+          pass
+
+      return jsonify({
+        "prompt": prompt,
         "response": response.text
       })
     else:
