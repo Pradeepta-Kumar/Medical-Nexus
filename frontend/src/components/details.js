@@ -1,36 +1,26 @@
+
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import axios from "axios";
 import toast from "react-hot-toast";
-// import { useNavigate } from "react-router-dom";
-import Results from "./Results";
+import { useNavigate } from "react-router-dom";
 
 export default function Details() {
-  const [gender, setGender] = useState();
-  const [age, setAge] = useState();
-  const [bodyTemp, setBodyTemp] = useState();
-  const [pulseRate, setPulseRate] = useState();
-  const [respirationRate, setRespirationRate] = useState();
-  const [bloodPressure, setBloodPressure] = useState();
-  const [bloodOxygenLevel, setBloodOxygenLevel] = useState();
-  const [weight, setWeight] = useState();
-  const [bloodGlucoseLevel, setBloodGlucoseLevel] = useState();
-  // const navigate = useNavigate();
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [bodyTemp, setBodyTemp] = useState("");
+  const [pulseRate, setPulseRate] = useState("");
+  const [respirationRate, setRespirationRate] = useState("");
+  const [bloodPressure, setBloodPressure] = useState("");
+  const [bloodOxygenLevel, setBloodOxygenLevel] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bloodGlucoseLevel, setBloodGlucoseLevel] = useState("");
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   async function getHeathData(e) {
     e.preventDefault();
-    console.log(
-      gender,
-      age,
-      bodyTemp,
-      pulseRate,
-      respirationRate,
-      bloodPressure,
-      bloodOxygenLevel,
-      weight,
-      bloodGlucoseLevel
-    );
 
     const healthData = {
       gender,
@@ -41,42 +31,60 @@ export default function Details() {
       bloodPressure,
       bloodOxygenLevel,
       weight,
-      bloodGlucoseLevel
+      bloodGlucoseLevel,
+      userEmail: email, // Make sure to include userEmail in the request body
     };
+
     try {
       const response = await axios.post(
-        `http://localhost:8000/predict/predictDisease`,
+        "http://localhost:8000/user/addhealthdata",
         healthData,
         {
           withCredentials: true, // Include if you're dealing with cookies
           headers: {
-              'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
-      const data = response.request.responseText;
-      console.log(data);
+
       if (response.data.success) {
         toast.success(response.data.message);
       }
-    } catch (e) {
-      toast.error(e.response.data.message);
-      console.log(e);
-    } 
+      navigate("/history"); 
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }
+
+  function viewResults() {
+    navigate("/history");
   }
 
   return (
     <div>
       <Header />
       <main>
-        <div className="w-[100vw] h-[120vh] mb-8">
+        <div className="w-[100vw] h-[140vh] mb-8">
+          <div className="flex justify-around">
           <h3 className="text-center mt-4 text-3xl font-bold">
             Please re-enter your details
           </h3>
+          <button 
+          onClick={viewResults} className="text-sm font-bold bg-blue-300 px-3 py-1 rounded-xl mt-2">view your past searches</button>
+          </div>
           <form
             onSubmit={getHeathData}
             className="w-[50%] absolute pt-[3%] ml-[25%]"
           >
+            <div className="flex flex-col justify-between items-center shadow-lg rounded-md w-[100%] border-1 border-white mb-4">
+              <input
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
+                className="outline-none p-3 rounded-md bg-white text-black w-full pt-4"
+              />
+            </div>
             <div className="flex flex-col justify-between items-center shadow-lg rounded-md w-[100%] border-1 border-white mb-4">
               <input
                 type="text"
@@ -85,15 +93,16 @@ export default function Details() {
                 onChange={(e) => setGender(e.target.value)}
                 className="outline-none p-3 rounded-md bg-white text-black w-full pt-4"
               />
-              </div>
-              <div className="flex flex-col justify-between items-center shadow-lg rounded-md w-[100%] border-1 border-white mb-4">
+            </div>
+            <div className="flex flex-col justify-between items-center shadow-lg rounded-md w-[100%] border-1 border-white mb-4">
               <input
                 type="text"
                 placeholder="Enter age"
-                value={age} onChange={e => setAge(e.target.value)}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
                 className="outline-none p-3 rounded-md bg-white text-black w-full pt-4"
               />
-              </div>
+            </div>
             <div className="flex flex-col justify-between items-center shadow-lg rounded-md w-[100%] border-1 border-white mb-4">
               <input
                 type="text"
@@ -162,10 +171,9 @@ export default function Details() {
               Submit
             </button>
           </form>
-        </div>     
+        </div>
       </main>
-
-      <Footer/>
+      <Footer />
     </div>
   );
 }

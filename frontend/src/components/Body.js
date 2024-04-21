@@ -5,7 +5,7 @@ import Home from "./Home";
 import Login from "./Login";
 import UserDetails from "./UserDetails";
 import AboutUs from "./AboutUs";
-import Details from "./Details";
+import Details from "./Details.js";
 import History from "./History";
 
 export default function Body() {

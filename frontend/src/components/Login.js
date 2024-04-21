@@ -34,7 +34,7 @@ export default function Login() {
           toast.success(response.data.message);
         }
         // console.log(response.data);
-        navigate("/history");
+        navigate("/Details");
       } catch (e) {
         toast.error(e.response.data.message);
         console.log(e);
